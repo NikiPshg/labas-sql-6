@@ -1,0 +1,62 @@
+CREATE TABLE IF NOT EXISTS shop (
+  id INTEGER PRIMARY KEY,
+  name VARCHAR(255) UNIQUE,
+  balance FLOAT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS product (
+  id INTEGER PRIMARY KEY,
+  name VARCHAR(255) UNIQUE,
+  price FLOAT NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS warehouse (
+  shop_id INTEGER REFERENCES shop (id),
+  product_id INTEGER REFERENCES product (id),
+  quantity INTEGER NOT NULL,
+  PRIMARY KEY (shop_id, product_id)
+);
+
+
+
+INSERT OR REPLACE INTO shop (id, name, balance) VALUES (1, 'пятерочка',31);
+INSERT OR REPLACE INTO shop (id, name, balance) VALUES (2, 'перекресток',133);
+INSERT OR REPLACE INTO product VALUES (1, 'молоко', 100);
+INSERT OR REPLACE INTO product VALUES (2, 'хлеб', 25);
+INSERT OR REPLACE INTO product VALUES (3, 'хлеб', 30);
+INSERT OR REPLACE INTO warehouse VALUES (1, 1, 20);
+INSERT OR REPLACE INTO warehouse VALUES (1, 2, 10);
+INSERT OR REPLACE INTO warehouse VALUES (2, 1, 30);
+/*
+SELECT * FROM warehouse ORDER BY quantity DESC
+*/
+
+/*
+SELECT name, avg(balance) as avg_balance from shop group by name 
+order by avg_balance
+*/
+
+
+CREATE TABLE IF NOT EXISTS worker (
+  worker_id INTEGER PRIMARY KEY,
+  shop_id INTEGER REFERENCES product(id),
+  name VARCHAR(255),
+  salary INTEGER NOT NULL,
+  position VARCHAR(255)
+);
+
+INSERT OR REPLACE INTO worker VALUES (1, 1, 'Ахилес', 20000 , 'Продавец'  );
+INSERT OR REPLACE INTO worker VALUES (2, 1, 'Халом', 21000 , 'Продавец'  );
+INSERT OR REPLACE INTO worker VALUES (3, 1, 'Царицин', 22000 , 'Продавец'  );
+INSERT OR REPLACE INTO worker VALUES (4, 1, 'Царицин', 22000 , 'Продавец'  );
+INSERT OR REPLACE INTO worker VALUES (5, 1, 'Петя', 30000 , 'Админ'  );
+
+
+INSERT OR REPLACE INTO worker VALUES (6, 2, 'Йом', 20000 , 'Продавец'  );
+INSERT OR REPLACE INTO worker VALUES (7, 2, 'Шалам', 21000 , 'Продавец'  );
+INSERT OR REPLACE INTO worker VALUES (8, 2, 'Тугушук', 22000 , 'Продавец'  );
+INSERT OR REPLACE INTO worker VALUES (9, 2, 'Зунгак', 22000 , 'Продавец'  );
+INSERT OR REPLACE INTO worker VALUES (10, 2, 'Кокак', 30000 , 'Админ'  );
+
+SELECT name, salary as avg_balance from worker group by salary ;
